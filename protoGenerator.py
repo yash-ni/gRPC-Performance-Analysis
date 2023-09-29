@@ -115,7 +115,7 @@ def generate_random_message(fields, index, message_count):
         if not enumCnt:
             enumCnt = min(args.enum[0], fields)
         for _ in range(enumCnt):
-            final_choice = f"\n  MuEnum{random.randint(1, args.enum[1])} enumField{field_postfix} = {field_value};"
+            final_choice = f"\n  MyEnum{random.randint(1, args.enum[1])} enumField{field_postfix} = {field_value};"
             if args.repeated:
                 weight = [0.65, 0.35]
                 repeated_choice = "\n  " + "repeated " + final_choice.strip()

@@ -1,3 +1,4 @@
 *.proto
 *.txt
+*.svg
 !requirements.txt

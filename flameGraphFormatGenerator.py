@@ -29,9 +29,12 @@ data = pd.read_csv('./profile.csv')
 
 viNameList = data['VI Name']
 totalViTimeList = data['Total Time']
+viTimeList = data["VI Time"]
 totalViCnt = len(data['VI Name'])
 
 graph = {}
+viParentTimeMap = {}
+viParentChildTimeMap = {}
 totalParentTimeMap = {}
 totalParentChildTimeMap = {}
 vis = {}
@@ -40,7 +43,9 @@ i = 0
 while i < totalViCnt:
     parentName = viNameList[i].split(':')[-1]
     totalParentTime = totalViTimeList[i]
+    viParentTime = viTimeList[i]
     totalParentTimeMap[parentName] = totalParentTime
+    viParentTimeMap[parentName] = viParentTime
     vis[parentName] = False
     i += 1
     child = []
@@ -48,10 +53,15 @@ while i < totalViCnt:
         childName = viNameList[i].split('-->')[-1].split(':')[-1]
         vis[childName] = False
         totalChildTime = totalViTimeList[i]
+        viChildTime = viTimeList[i]
         if parentName not in totalParentChildTimeMap.keys():
             totalParentChildTimeMap[parentName] = {}
+        if parentName not in viParentChildTimeMap.keys():
+            viParentChildTimeMap[parentName] = {}
         totalParentChildTimeMap[parentName][childName] = totalChildTime
+        viParentChildTimeMap[parentName][childName] = viChildTime
         child.append(childName)
+        graph[childName] = []
         i += 1
     graph[parentName] = child
 
@@ -68,15 +78,16 @@ while i < totalViCnt:
 
 def dfs(node:str, graph:map, vis:map, path:str, vec:list, totalParentTimeMap:map, totalParentChildTimeMap:map):
     vis[node] = True
-
-    if node not in graph.keys():
+    if len(graph[node]) == 0:
         vec.append(path+';'+node+' '+str(totalParentTimeMap[node]))
         return
+    vec.append(path+';'+node+' '+str(viParentTimeMap[node]))
     
     for child in graph[node]:
         if vis[child] == False and totalParentChildTimeMap[node][child] == totalParentTimeMap[child]:
             dfs(child, graph, vis, path+';'+node, vec, totalParentTimeMap, totalParentChildTimeMap)
         else:
+            # vec.append(path+';'+node+' '+str(viParentChildTimeMap[node][child]))
             vec.append(path+';'+node+';'+child+' '+str(totalParentChildTimeMap[node][child]))
     vis[node] = False
 

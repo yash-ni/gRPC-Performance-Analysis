@@ -12,6 +12,7 @@ parser.add_argument('-e', "--enum", nargs=3, type=int, help="No of enums per mes
 parser.add_argument("--nested_message", action='store_true', help="Enables random nested messages")
 parser.add_argument("--streaming", action='store_true', help="Enables random streaming rpc's")
 parser.add_argument("--repeated", action='store_true', help="Enables random repeated messages")
+parser.add_argument('-f', "--output", type=str, help="Name of the output txt file")
 
 args = parser.parse_args()
 
@@ -161,7 +162,11 @@ def generate_enum(enum_count, enum_field_count):
     return temp
 
 if __name__ == '__main__':
-    with open("myProto.proto", "w") as f:
+    outputProtoFileName = 'myProto.proto'
+    if args.output is not None:
+        outputProtoFileName = args.output
+    
+    with open(outputProtoFileName, "w") as f:
 
         # Initial syntax for protofile
         f.write("syntax = \"proto3\";\n")

@@ -82,7 +82,7 @@ def generate_random_message(fields, index, message_count):
     field_postfix = 0
 
     # Value of that field in the message
-    field_value = 0
+    field_value = 1
 
     # Initializing default value
     oneOfCnt = enumCnt = None
